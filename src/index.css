@@ -1,0 +1,188 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/inter/wght-italic.css";
+@import "@fontsource/instrument-serif";
+@import "@fontsource/instrument-serif/400-italic.css";
+@import "@fontsource-variable/jetbrains-mono";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------ */
+/* Design tokens                                                       */
+/* ------------------------------------------------------------------ */
+
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Ink scale — the dark premium base used across landing + dark app theme */
+  --color-ink-950: #07080b;
+  --color-ink-900: #0b0d12;
+  --color-ink-850: #0e1017;
+  --color-ink-800: #12151d;
+  --color-ink-700: #191d27;
+  --color-ink-600: #232735;
+  --color-ink-500: #2d3241;
+  --color-ink-400: #454b5e;
+  --color-ink-300: #6b7185;
+  --color-ink-200: #9aa0b3;
+  --color-ink-100: #c7cad6;
+  --color-ink-50: #eef0f4;
+
+  /* Paper scale — the light theme base for the app */
+  --color-paper-0: #ffffff;
+  --color-paper-50: #f8f8fa;
+  --color-paper-100: #f1f2f5;
+  --color-paper-200: #e6e7ec;
+  --color-paper-300: #d6d8e0;
+  --color-paper-400: #a9adba;
+  --color-paper-500: #767c8d;
+  --color-paper-600: #565c6d;
+  --color-paper-700: #383c48;
+  --color-paper-800: #212430;
+  --color-paper-900: #14151c;
+
+  /* Gold accent — Aureon's signature */
+  --color-gold-200: #f2ddac;
+  --color-gold-300: #e8ca88;
+  --color-gold-400: #ddb96a;
+  --color-gold-500: #cea254;
+  --color-gold-600: #b0843e;
+  --color-gold-700: #8a6631;
+
+  /* Semantic status */
+  --color-success-400: #5cc397;
+  --color-success-500: #3fa87d;
+  --color-warning-400: #eab568;
+  --color-warning-500: #dd9a3f;
+  --color-danger-400: #ed7d7d;
+  --color-danger-500: #dc5555;
+  --color-info-400: #7ea3f2;
+  --color-info-500: #5c85e6;
+
+  /* Semantic aliases — resolved at runtime via CSS custom properties so
+     the app theme (light/dark) can swap them; landing page consumes the
+     raw ink/gold scale directly since it never leaves dark mode. */
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-overlay: var(--surface-overlay);
+  --color-border-default: var(--border-default);
+  --color-border-strong: var(--border-strong);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-accent: var(--color-gold-500);
+  --color-accent-strong: var(--color-gold-400);
+
+  --shadow-soft: 0 1px 2px rgba(7, 8, 11, 0.04), 0 1px 1px rgba(7, 8, 11, 0.03);
+  --shadow-card: 0 4px 16px -4px rgba(7, 8, 11, 0.12), 0 1px 2px rgba(7, 8, 11, 0.06);
+  --shadow-raised: 0 12px 32px -8px rgba(7, 8, 11, 0.28), 0 2px 6px rgba(7, 8, 11, 0.12);
+  --shadow-glow-gold: 0 0 1px rgba(206, 162, 84, 0.6), 0 0 48px -4px rgba(206, 162, 84, 0.35);
+
+  --animate-shimmer: shimmer 1.8s ease-in-out infinite;
+  --animate-pulse-soft: pulse-soft 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.55; }
+  }
+  @keyframes dropdown-in {
+    from { opacity: 0; transform: scale(0.96) translateY(-4px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Theme resolution — light is default, .dark overrides                */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --surface: var(--color-paper-0);
+  --surface-raised: var(--color-paper-0);
+  --surface-overlay: var(--color-paper-0);
+  --border-default: var(--color-paper-200);
+  --border-strong: var(--color-paper-300);
+  --text-primary: var(--color-paper-900);
+  --text-secondary: var(--color-paper-600);
+  --text-tertiary: var(--color-paper-500);
+  color-scheme: light;
+}
+
+.dark {
+  --surface: var(--color-ink-950);
+  --surface-raised: var(--color-ink-850);
+  --surface-overlay: var(--color-ink-800);
+  --border-default: var(--color-ink-600);
+  --border-strong: var(--color-ink-500);
+  --text-primary: var(--color-ink-50);
+  --text-secondary: var(--color-ink-200);
+  --text-tertiary: var(--color-ink-300);
+  color-scheme: dark;
+}
+
+/* ------------------------------------------------------------------ */
+/* Base layer                                                          */
+/* ------------------------------------------------------------------ */
+
+@layer base {
+  * {
+    border-color: var(--border-default);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-synthesis: none;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100svh;
+    font-family: var(--font-sans);
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+  }
+
+  ::selection {
+    background-color: rgba(206, 162, 84, 0.28);
+    color: inherit;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold-400);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--border-strong);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
